@@ -41,7 +41,7 @@ f=open('payload2.txt', 'r')
 # ord() function convert each char in secret payload to ASCII code  
 blist = [ord(b) for b in f.read()]  
 for b in blist:
-    #print(b)
+    print(b)
     for i in range(8): 
         bits.append((b >> i) & 1) 
 
@@ -53,10 +53,10 @@ idx=0
 
 # payload hiding: the code below encodes the payload into the image
 for i in range(I.shape[0]): # image height
-    for j in range(I.shape[1]): # image width 
+    for j in range(I.shape[1]): # image ewidth
         for k in range(3): 
             if idx<len(bits): # bits array has 150 char x 8 bits = 1200 bits
-                if I[i][j][k]%2 != bits[idx]: # if pixel binary is even, when mod 2=0 . When odd, =1. Only has to +1/-1 when pixel binary (LSB) is different from secret payload
+                if I[i][j][k]%2 != bits[idx]: #mod 2 to check if LSB is bit 1 or 0 so as to know to do matching or not
                     s=sign[random.randint(0, 1)] # generate a single number, either 1 or -1 
                     if I[i][j][k]==0: s=1  # if pixel is black add 1
                     if I[i][j][k]==255: s=-1 # if pixel is white minus 1
