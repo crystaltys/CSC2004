@@ -82,13 +82,13 @@ class BPCS(object):
 
 					new_channels = [self.bitplane_to_channel(bitplane) for bitplane in channels_bitplane]
 
-					# gabungin ke gambar utuh
+					# combine to the full image
 					temp_block = cv2.merge(new_channels)
 
-					# rewrite gambar asli dengan informasi rahasia
+					# rewrite original image with classified information
 					self.img[row:row+windowsize_r, col:col+windowsize_c] = temp_block
 
-				#kotor tapi bodo amat
+				#dirty but very stupid
 				if(msg_iterator >= len(message)): break
 
 			if(msg_iterator >= len(message)): break
