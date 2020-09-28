@@ -50,7 +50,7 @@ class Message(object):
 			if (encrypted and key != None):
 				self.content = vigenere_cipher.encrypt(self.content, key)
 
-	# ngubah file pesan dari byte ke bit, msg harus dalam binary format
+	# Change message file from bytes to bits, msg must be in binary format
 	def to_binary(self, msg):
 		temp = [format(i, '08b') for i in msg]
 		binary_msg = temp
@@ -59,7 +59,7 @@ class Message(object):
 
 		return binary_msg
 
-	# format bit nya menjadi array of bitplane. setiap bitplane ukurannya 64 bit
+	# the bit format becomes an array of bitplane. each bitplane is 64 bits in size
 	def to_bitplane(self, binary_msg):
 		temp = np.array([list(i) for i in binary_msg])
 		# print(temp)
@@ -71,8 +71,8 @@ class Message(object):
 				bitplane_msg.append(temp[r:r+windowsize_r,c:c+windowsize_c].astype(int))
 		return bitplane_msg
 
-	# kalo misalnya ada plane pesan yang kurang kompleksitasnya, di konyugasi sama papan catur
-	# inputnya harus np array
+	# For example, if there is a message plane that is less complex, it is conjugated with a chessboard, then it is changed to a conjugate map
+	# the input must be np array
 	def conjugate(self, plane):
 		return plane ^ chessboard
 
@@ -88,7 +88,7 @@ class Message(object):
 						counter += 1
 		return counter / 112
 
-	# check complexity tiap bitplane, conjugate kalo perlu, tambahin ke conjugate map
+	# check complexity for each bitplane, conjugate if necessary, add to the conjugate map
 	def conjugate_message_content(self):
 		for i in range(len(self.content_bitplane)):
 			complexity = self.calculate_complexity(i)
