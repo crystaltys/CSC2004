@@ -214,7 +214,7 @@ class Message(object):
 		self.header_bitplane = bitplane_array[1:header_length + 1]
 		#print(header_length, self.header_bitplane)
 
-		# buang len header sama header dari bitplane array
+		# discard len header equals header from bitplane array
 		bitplane_array = bitplane_array[header_length+1:]
 
 		content_length = self.matrix_to_int(bitplane_array[0])
