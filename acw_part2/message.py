@@ -34,21 +34,20 @@ class Message(object):
 	encrypted = False
 	key = None
 
-	def __init__(self, pathname = None, encrypted = False, key = None, threshold = 0.3):
+	def __init__(self, message = None, encrypted = False, key = None, threshold = 0.3):
 		self.threshold = threshold
 		self.encrypted = encrypted
+		self.message = message
 		self.key = key
 
-		if (pathname != None):
-			with open(pathname, 'rb') as f:
-				self.content = f.read()
+		if (message != None):
+			self.content = self.message
 			self.content_length = len(self.content)
-			self.file_name, self.file_extension = os.path.splitext(pathname)
-			self.file_name = self.file_name.split('/')[-1]
-
 			# encrypt file if needed
 			if (encrypted and key != None):
 				self.content = vigenere_cipher.encrypt(self.content, key)
+
+	# ngubah file pesan dari byte ke bit, msg harus dalam binary format
 
 	# Change message file from bytes to bits, msg must be in binary format
 	def to_binary(self, msg):
