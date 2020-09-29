@@ -1,4 +1,5 @@
 #Python GUI
+import sys
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import StringVar
@@ -7,6 +8,8 @@ from tkinter import Canvas, Scrollbar
 from tkinter import filedialog
 from PIL import ImageTk,Image  
 from bpcs import BPCS
+from message import Message
+
 
 
 class GUI():
@@ -61,17 +64,19 @@ class GUI():
         self.uploadButton.grid(row=5,column=0,padx=2,pady=5,ipady=4,ipadx=26,sticky=tk.NW)
         self.resetButton=ttk.Button(encode,text="Clear",padding=2,command=self.clear_coverImg)
         self.resetButton.grid(row=5,column=1,padx=2,pady=5,ipady=4,ipadx=26,sticky=tk.NW)
-        self.createButton=ttk.Button(encode,text="Start Encoding",padding=2,command=self.encode)
+        self.createButton=ttk.Button(encode,text="Start Encoding",padding=2)
         self.createButton.grid(row=5,column=5,columnspan=2,padx=2,pady=4,ipady=4,ipadx=85,sticky=tk.NW)
-
+        self.createButton.bind("<Button-1>", self.encode)
+    
     def entryBox(self,encode,decode):  
         # middle pane
         self.secretMsg_txtBox = tk.Text(encode, height=16, width=30)
         self.secretMsg_txtBox.grid(row=2,column=2,columnspan=3,rowspan=2,padx=8,sticky=tk.W) 
-        self.secretMsg_txtBox.bind("<Key>", self.load_secretPayload)
+        self.secretMsg_txtBox.bind("<Leave>", self.getSecretPayload)
         self.txtsecretKey=StringVar()
         self.entryKey=ttk.Entry(encode,textvariable=self.txtsecretKey,width=28)
         self.entryKey.grid(row=4,column=3,pady=5,ipady=4,sticky=tk.NSEW)   
+        self.entryKey.bind("<Leave>", self.getSecretKey)
         
         self.txtThreshold=StringVar()
         self.txtThreshold.set("0.3")
@@ -92,16 +97,40 @@ class GUI():
     def clear_coverImg(self):
         self.inputImage.delete("all")
     
-    def load_secretPayload(self,event):
-        self.input = self.secretMsg_txtBox.get("1.0","end-1c")
-        print(self.input)
+    def getSecretPayload(self,event): # secret message
+        msgInput = self.secretMsg_txtBox.get("1.0","end-1c")
+        if len(self.secretMsg_txtBox.get("1.0","end-1c")) == 0 or '':
+            return(None)
+        else: 
+            return(msgInput)
+  
     
-
-    def decode(self):
-        bpcs = BPCS(self.filename)
+    def getSecretKey(self,event):
+        self.keyInput = self.txtsecretKey.get()
+        if len(self.keyInput) == 0 or '':
+            return(None)
+        else: 
+            return(self.keyInput)
+   
+    def getThreshold(self,event):
+        threshold = self.txtThreshold.get()
+        if len(threshold) == 0:
+            return(None)
+        else: 
+            return(threshold)
+    
+    def encode(self,event):
+        bpcs = BPCS(self.filename) 
         orig_extension = self.filename.split('.')[-1]
-        print(orig_extension)
-
+        encrypted = True if self.getSecretKey(event)!= None else False
+        message = True if self.getSecretPayload(event)!= None else False
+        threshold = 0.3
+        if (message is False):
+            tk.messagebox.showerror(title="Error", message="Enter Secret Payload")
+        else:
+            msg = Message(message=self.getSecretPayload(event), encrypted = encrypted, key = self.getSecretKey(event), threshold = threshold)
+            bitplane_msg = msg.create_message()
+            img_result = bpcs.hide(bitplane_msg, randomize=True, key=self.getSecretKey(event), threshold = threshold)
 
 if __name__ == "__main__":
     window = tk.Tk()
