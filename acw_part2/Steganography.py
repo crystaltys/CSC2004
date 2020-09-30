@@ -9,10 +9,9 @@ from tkinter import filedialog
 from PIL import ImageTk,Image  
 from bpcs import BPCS
 from message import Message
+from cv2 import cv2
 
-
-
-class GUI():
+class GUI:
 
     def __init__(self, window):
         
@@ -118,7 +117,7 @@ class GUI():
             return(None)
         else: 
             return(threshold)
-    
+
     def encode(self,event):
         bpcs = BPCS(self.filename) 
         orig_extension = self.filename.split('.')[-1]
@@ -128,9 +127,19 @@ class GUI():
         if (message is False):
             tk.messagebox.showerror(title="Error", message="Enter Secret Payload")
         else:
-            msg = Message(message=self.getSecretPayload(event), encrypted = encrypted, key = self.getSecretKey(event), threshold = threshold)
+            # WORK WILL GO HERE OUTPUT STEGANO PICTURE
+            print('OK OK OK OK OK OK OK OK OK OK')
+            # msg = Message(message=self.getSecretPayload(event), encrypted = encrypted, key = self.getSecretKey(event), threshold = threshold)
+            msg = Message(pathname=self.filename, encrypted=encrypted, key=self.getSecretKey(event), threshold=threshold)
+            print (msg)
             bitplane_msg = msg.create_message()
             img_result = bpcs.hide(bitplane_msg, randomize=True, key=self.getSecretKey(event), threshold = threshold)
+            cv2.imwrite('saved.png', img_result)
+
+            # create photoimage
+            # img_result = ImageTk.PhotoImage(self.img)
+            # self.inputImage.create_image(0, 0, image=img_result, anchor=tk.NW)
+            print('OK OK OK OK OK OK OK OK OK OK')
 
 if __name__ == "__main__":
     window = tk.Tk()
