@@ -118,6 +118,13 @@ class GUI:
         else: 
             return(threshold)
 
+    def load_stegoImg(self):
+        self.steg_img = Image.open('saved.png')
+        self.steg_img.thumbnail((300, 400), Image.ANTIALIAS)
+        #create photoimage
+        self.steg_image = ImageTk.PhotoImage(self.steg_img)
+        self.outputImage.create_image(0,0,image=self.steg_image, anchor=tk.NW)
+
     def encode(self,event):
         bpcs = BPCS(self.filename) 
         orig_extension = self.filename.split('.')[-1]
@@ -127,19 +134,17 @@ class GUI:
         if (message is False):
             tk.messagebox.showerror(title="Error", message="Enter Secret Payload")
         else:
-            # WORK WILL GO HERE OUTPUT STEGANO PICTURE
-            print('OK OK OK OK OK OK OK OK OK OK')
             # msg = Message(message=self.getSecretPayload(event), encrypted = encrypted, key = self.getSecretKey(event), threshold = threshold)
             msg = Message(pathname=self.filename, encrypted=encrypted, key=self.getSecretKey(event), threshold=threshold)
-            print (msg)
+            print('Loading Please wait...')
             bitplane_msg = msg.create_message()
             img_result = bpcs.hide(bitplane_msg, randomize=True, key=self.getSecretKey(event), threshold = threshold)
             cv2.imwrite('saved.png', img_result)
 
             # create photoimage
-            # img_result = ImageTk.PhotoImage(self.img)
-            # self.inputImage.create_image(0, 0, image=img_result, anchor=tk.NW)
-            print('OK OK OK OK OK OK OK OK OK OK')
+            img_result = ImageTk.PhotoImage(self.img)
+            self.load_stegoImg()
+            print('Finished encoding!')
 
 if __name__ == "__main__":
     window = tk.Tk()
