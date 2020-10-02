@@ -100,7 +100,8 @@ class GUI:
         msgInput = self.secretMsg_txtBox.get("1.0","end-1c")
         if len(self.secretMsg_txtBox.get("1.0","end-1c")) == 0 or '':
             return(None)
-        else: 
+        else:
+            print('Payload is: ', msgInput) 
             return(msgInput)
   
     
@@ -138,6 +139,7 @@ class GUI:
             msg = Message(pathname=self.filename, encrypted=encrypted, key=self.getSecretKey(event), threshold=threshold)
             print('Loading Please wait...')
             bitplane_msg = msg.create_message()
+            print('Bitplane message is: ', bitplane_msg)
             img_result = bpcs.hide(bitplane_msg, randomize=True, key=self.getSecretKey(event), threshold = threshold)
             cv2.imwrite('saved.png', img_result)
 
