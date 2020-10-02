@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import cv2
+from cv2 import cv2
 import numpy as np
 import random
 import math

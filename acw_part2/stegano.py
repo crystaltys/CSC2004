@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import argparse
-import cv2
+from cv2 import cv2
 from bpcs import BPCS, psnr
 from message import Message
 
@@ -34,7 +34,7 @@ def extract(args):
 	msg.write_msg(args.secret_message)
 	return
 
-# create stegano image
+# create stegano image LOOK HERE
 def create(args):
 	bpcs = BPCS(args.original_img)
 	orig_extension = args.original_img.split('.')[-1]
