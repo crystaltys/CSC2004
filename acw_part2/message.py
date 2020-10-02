@@ -34,23 +34,37 @@ class Message(object):
 	encrypted = False
 	key = None
 
-	def __init__(self, pathname = None, encrypted = False, key = None, threshold = 0.3):
+	# ORIGINAL CONSTRUCTOR
+	# def __init__(self, pathname = None, encrypted = False, key = None, threshold = 0.3):
+	# 	self.threshold = threshold
+	# 	self.encrypted = encrypted
+	# 	self.key = key
+
+	# 	if (pathname != None):
+	# 		with open(pathname, 'rb') as f:
+	# 			self.content = f.read()
+	# 			print('read:', self.content)
+	# 		self.content_length = len(self.content)
+	# 		self.file_name, self.file_extension = os.path.splitext(pathname)
+	# 		self.file_name = self.file_name.split('/')[-1]
+
+	# 		# encrypt file if needed
+	# 		if (encrypted and key != None):
+	# 			# added by Zhengyu for checks
+	# 			print('Content to encrypt: ', self.content)
+	# 			self.content = vigenere_cipher.encrypt(self.content, key)
+
+	def __init__(self, content = None, encrypted = False, key = None, threshold = 0.3):
 		self.threshold = threshold
 		self.encrypted = encrypted
 		self.key = key
+		self.content = content
 
-		if (pathname != None):
-			with open(pathname, 'rb') as f:
-				self.content = f.read()
-			self.content_length = len(self.content)
-			self.file_name, self.file_extension = os.path.splitext(pathname)
-			self.file_name = self.file_name.split('/')[-1]
-
-			# encrypt file if needed
-			if (encrypted and key != None):
-				# added by Zhengyu for checks
-				print('Content to encrypt: ', self.content)
-				self.content = vigenere_cipher.encrypt(self.content, key)
+		# encrypt file if needed
+		if (encrypted and key != None):
+			# added by Zhengyu for checks
+			print('Content to encrypt: ', self.content)
+			self.content = vigenere_cipher.encrypt(self.content, key)
 
 	# Change message file from bytes to bits, msg must be in binary format
 	def to_binary(self, msg):

@@ -101,8 +101,6 @@ class GUI:
         if len(self.secretMsg_txtBox.get("1.0","end-1c")) == 0 or '':
             return(None)
         else: 
-            # Added to check payload
-            print("Payload: ", msgInput)
             return(msgInput)
   
     
@@ -111,8 +109,6 @@ class GUI:
         if len(self.keyInput) == 0 or '':
             return(None)
         else: 
-            # Added to check secret key
-            print("Key: ", self.keyInput)
             return(self.keyInput)
    
     def getThreshold(self,event):
@@ -139,10 +135,10 @@ class GUI:
             tk.messagebox.showerror(title="Error", message="Enter Secret Payload")
         else:
             # original
-            # msg = Message(message=self.getSecretPayload(event), encrypted = encrypted, key = self.getSecretKey(event), threshold = threshold)
+            msg = Message(self.getSecretPayload(event), encrypted = encrypted, key = self.getSecretKey(event), threshold = threshold)
             
             # Zy's code
-            msg = Message(pathname=self.filename, encrypted=encrypted, key=self.getSecretKey(event), threshold=threshold)
+            # msg = Message(pathname=self.filename, encrypted=encrypted, key=self.getSecretKey(event), threshold=threshold)
             print('Loading Please wait...')
             bitplane_msg = msg.create_message()
             img_result = bpcs.hide(bitplane_msg, randomize=True, key=self.getSecretKey(event), threshold = threshold)
