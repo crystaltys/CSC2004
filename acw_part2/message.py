@@ -57,8 +57,8 @@ class Message(object):
 	def __init__(self, content = None, encrypted = False, key = None, threshold = 0.3):
 		self.threshold = threshold
 		self.encrypted = encrypted
-		self.key = key
-		self.content = content
+		self.key = key.upper()
+		self.content = content.upper()
 
 		# encrypt file if needed
 		if (encrypted and key != None):
@@ -163,7 +163,7 @@ class Message(object):
 	# create message bitplane containing message header & message content
 	def create_message(self):
 		self.create_message_content()
-		self.create_message_header()
+		# self.create_message_header()
 
 		num_header = len(self.header_bitplane)
 		self.bitplane_array += self.convert_int_to_matrix_plane(num_header)
