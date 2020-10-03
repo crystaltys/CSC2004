@@ -134,11 +134,9 @@ class GUI:
         if (message is False):
             tk.messagebox.showerror(title="Error", message="Enter Secret Payload")
         else:
-            # original
+            # Instantiates a msg object
             msg = Message(self.getSecretPayload(event), encrypted = encrypted, key = self.getSecretKey(event), threshold = threshold)
             
-            # Zy's code
-            # msg = Message(pathname=self.filename, encrypted=encrypted, key=self.getSecretKey(event), threshold=threshold)
             print('Loading Please wait...')
             bitplane_msg = msg.create_message()
             img_result = bpcs.hide(bitplane_msg, randomize=True, key=self.getSecretKey(event), threshold = threshold)

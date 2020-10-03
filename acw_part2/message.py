@@ -117,6 +117,8 @@ class Message(object):
 	def create_message_content(self):
 		content_binary = self.to_binary(self.content)
 		self.content_bitplane = self.to_bitplane(content_binary)
+		print("msg's content_binary: ",content_binary)
+		print("msg's content_bitplane: ",self.content_bitplane)
 
 	# format header:
 	# len file_name ; file_extension ; content_length
