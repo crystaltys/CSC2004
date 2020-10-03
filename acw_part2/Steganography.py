@@ -101,7 +101,7 @@ class GUI:
         if len(self.secretMsg_txtBox.get("1.0","end-1c")) == 0 or '':
             return(None)
         else: 
-            return(msgInput)
+            return(msgInput.upper())
   
     
     def getSecretKey(self,event):
@@ -116,7 +116,7 @@ class GUI:
         if len(threshold) == 0:
             return(None)
         else: 
-            return(threshold)
+            return(threshold.upper())
 
     def load_stegoImg(self):
         self.steg_img = Image.open('saved.png')
@@ -139,13 +139,14 @@ class GUI:
             
             print('Loading Please wait...')
             bitplane_msg = msg.create_message()
+            print("bitplane_msg: ",bitplane_msg)
             img_result = bpcs.hide(bitplane_msg, randomize=True, key=self.getSecretKey(event), threshold = threshold)
             cv2.imwrite('saved.png', img_result)
 
             # create photoimage
             img_result = ImageTk.PhotoImage(self.img)
             self.load_stegoImg()
-            print('Finished encoding!')
+            print('\nThis should be the end of encoding.')
 
 if __name__ == "__main__":
     window = tk.Tk()

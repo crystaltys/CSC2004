@@ -57,8 +57,8 @@ class Message(object):
 	def __init__(self, content = None, encrypted = False, key = None, threshold = 0.3):
 		self.threshold = threshold
 		self.encrypted = encrypted
-		self.key = key.upper()
-		self.content = content.upper()
+		self.key = key
+		self.content = content
 
 		# encrypt file if needed
 		if (encrypted and key != None):
