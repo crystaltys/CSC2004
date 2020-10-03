@@ -115,6 +115,7 @@ class Message(object):
 				self.conjugate_list.append(i)
 
 	def create_message_content(self):
+		print("msg's content: ", self.content)
 		content_binary = self.to_binary(self.content)
 		self.content_bitplane = self.to_bitplane(content_binary)
 		print("msg's content_binary: ",content_binary)
