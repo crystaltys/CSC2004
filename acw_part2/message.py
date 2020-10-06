@@ -34,37 +34,38 @@ class Message(object):
 	encrypted = False
 	key = None
 
-	# ORIGINAL CONSTRUCTOR
-	# def __init__(self, pathname = None, encrypted = False, key = None, threshold = 0.3):
-	# 	self.threshold = threshold
-	# 	self.encrypted = encrypted
-	# 	self.key = key
-
-	# 	if (pathname != None):
-	# 		with open(pathname, 'rb') as f:
-	# 			self.content = f.read()
-	# 			print('read:', self.content)
-	# 		self.content_length = len(self.content)
-	# 		self.file_name, self.file_extension = os.path.splitext(pathname)
-	# 		self.file_name = self.file_name.split('/')[-1]
-
-	# 		# encrypt file if needed
-	# 		if (encrypted and key != None):
-	# 			# added by Zhengyu for checks
-	# 			print('Content to encrypt: ', self.content)
-	# 			self.content = vigenere_cipher.encrypt(self.content, key)
-
-	def __init__(self, content = None, encrypted = False, key = None, threshold = 0.3):
+	# # ORIGINAL CONSTRUCTOR
+	def __init__(self, pathname = None, encrypted = False, key = None, threshold = 0.3):
 		self.threshold = threshold
 		self.encrypted = encrypted
 		self.key = key
-		self.content = content
 
-		# encrypt file if needed
-		if (encrypted and key != None):
-			# added by Zhengyu for checks
-			print('Content to encrypt: ', self.content)
-			self.content = vigenere_cipher.encrypt(self.content, key)
+		#temporary
+		self.pathname=pathname  
+
+		if (pathname != None):
+			with open(pathname, 'rb') as f:
+				self.content = f.read()
+				print('read:', self.content)
+			self.content_length = len(self.content)
+			self.file_name, self.file_extension = os.path.splitext(pathname)
+			self.file_name = self.file_name.split('/')[-1]
+
+			# encrypt file if needed
+			if (encrypted and key != None):
+				# added by Zhengyu for checks
+				print('Content to encrypt: ', self.content)
+				self.content = vigenere_cipher.encrypt(self.content, key)
+
+	# def __init__(self, content = None, encrypted = False, key = None, threshold = 0.3):
+	# 	self.threshold = threshold
+	# 	self.encrypted = encrypted
+	# 	self.key = key
+	# 	self.content = content
+
+	# 	# encrypt file if needed
+	# 	if (encrypted and key != None):
+	# 		self.content = vigenere_cipher.encrypt(self.content, key)
 
 	# Change message file from bytes to bits, msg must be in binary format
 	def to_binary(self, msg):
@@ -126,7 +127,6 @@ class Message(object):
 	# num header: 5
 	def create_message_header(self):
 		msg_header_string = ""
-		temp = []
 		msg_header_string += self.file_name + ";"
 		msg_header_string += self.file_extension + ";"
 		msg_header_string += str(self.content_length) + ";"
@@ -166,7 +166,8 @@ class Message(object):
 	# create message bitplane containing message header & message content
 	def create_message(self):
 		self.create_message_content()
-		# self.create_message_header()
+		# MIGHT NOT NEED A HEADER #############################################
+		self.create_message_header()
 
 		num_header = len(self.header_bitplane)
 		self.bitplane_array += self.convert_int_to_matrix_plane(num_header)

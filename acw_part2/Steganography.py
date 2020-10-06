@@ -101,7 +101,7 @@ class GUI:
         if len(self.secretMsg_txtBox.get("1.0","end-1c")) == 0 or '':
             return(None)
         else: 
-            return(msgInput.upper())
+            return(msgInput)
   
     
     def getSecretKey(self,event):
@@ -116,7 +116,7 @@ class GUI:
         if len(threshold) == 0:
             return(None)
         else: 
-            return(threshold.upper())
+            return(threshold)
 
     def load_stegoImg(self):
         self.steg_img = Image.open('saved.png')
@@ -126,8 +126,9 @@ class GUI:
         self.outputImage.create_image(0,0,image=self.steg_image, anchor=tk.NW)
 
     def encode(self,event):
-        bpcs = BPCS(self.filename) 
-        orig_extension = self.filename.split('.')[-1]
+        bpcs = BPCS(self.filename)
+        textFile = open("input.txt","w+") 
+        # orig_extension = self.filename.split('.')[-1]
         encrypted = True if self.getSecretKey(event)!= None else False
         message = True if self.getSecretPayload(event)!= None else False
         threshold = 0.3
@@ -135,12 +136,16 @@ class GUI:
             tk.messagebox.showerror(title="Error", message="Enter Secret Payload")
         else:
             # Instantiates a msg object
-            msg = Message(self.getSecretPayload(event), encrypted = encrypted, key = self.getSecretKey(event), threshold = threshold)
-            
-            print('Loading Please wait...')
+            # msg = Message(self.getSecretPayload(event), encrypted = encrypted, key = self.getSecretKey(event), threshold = threshold)
+            textFile.write(self.getSecretPayload(event))
+            textFile.close()
+            msg = Message('input.txt', encrypted = encrypted, key = self.getSecretKey(event), threshold = threshold)
+            print('\n~~~~~~~~~~~~~~~~START OF ENCODING~~~~~~~~~~~~~~~~\n')
+
             bitplane_msg = msg.create_message()
             print("bitplane_msg: ",bitplane_msg)
-            img_result = bpcs.hide(bitplane_msg, randomize=True, key=self.getSecretKey(event), threshold = threshold)
+
+            img_result = bpcs.hide(bitplane_msg, randomize=False, key=self.getSecretKey(event), threshold = threshold)
             cv2.imwrite('saved.png', img_result)
 
             # create photoimage

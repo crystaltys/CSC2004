@@ -11,9 +11,12 @@ def psnr(img1, img2):
 
 class BPCS(object):
 
+	# This constructor initializes a BPCS object and sets row and column to be the width and height
+	# of the image that is provided within the image path.
 	def __init__(self, img_path):
 		self.img = cv2.imread(img_path, cv2.IMREAD_UNCHANGED)
 		self.row, self.col = self.img.shape[0], self.img.shape[1]
+		print("Image width: ",self.row," & Image height: ", self.col)
 
 	def generate_seed(self, key):
 		"""Generate random seed based on key
@@ -57,6 +60,7 @@ class BPCS(object):
 		#print("lenmsg", len(message))
 
 		msg_iterator = 0
+		print("Message len to iterate through is: ",len(message))
 		while(msg_iterator < len(message)):
 			for row in range(0,self.row - windowsize_r + 1, windowsize_r):
 				for col in range(0,self.col - windowsize_c + 1, windowsize_c):

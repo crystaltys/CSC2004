@@ -14,6 +14,7 @@ def encrypt(plaintext, key):
         p = ord(plaintext[i])
         k = ord(key[i % key_length])
         c = (p + k) % 256
+        print("c is: ",c)
         ciphertext.append(c)
     return bytes(ciphertext)
 
